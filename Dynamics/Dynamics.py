@@ -16,12 +16,12 @@ class Dynamics(object):
                                  'reference_frame': dynamics_properties['Orbit']['reference_frame']}
         self.attitude   = Attitude(attitude_properties)
         self.ephemeris = Ephemeris(dynamics_properties['Ephemerides'])
-        self.trajectory = Trajectory(trajectory_properties, self.simtime.stepsimTime, self.ephemeris.selected_planet)
+        self.trajectory = Trajectory(trajectory_properties, self.simtime.trajectorystep,
+                                     self.ephemeris.selected_center_object)
 
     def update(self):
         self.attitude.update_attitude(self.simtime.maincountTime)
-        if self.simtime.orbit_update_flag:
-            self.trajectory.update_trajectory(self.simtime.get_array_time()[0])
+        if self.simtime.trajectory_update_flag:
+            self.trajectory.update(self.simtime.get_array_time()[0])
             self.ephemeris.update(self.simtime.current_jd)
-            self.trajectory.TransECItoGeo(self.ephemeris.selected_planet.get_current_sideral())
-            self.simtime.orbit_update_flag = False
+            self.trajectory.TransECItoGeo(self.ephemeris.selected_center_object.get_current_sideral())

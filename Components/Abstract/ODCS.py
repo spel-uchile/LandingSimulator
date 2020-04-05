@@ -9,7 +9,7 @@ class ODCS(ComponentBase):
         self.dynamics = dynamics
         self.components = Components(init_componenets, self.dynamics, 3)
         self.current_omega_c_gyro = np.zeros(3)
-        self.force_thruster_b = np.zeros(3)
+        self.force_thruster_b = np.array([0.0, 0.0, -0.00001])
         self.torque_thruster_b = np.zeros(3)
 
     def main_routine(self, count):

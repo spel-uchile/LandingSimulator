@@ -14,7 +14,7 @@ class Earth(object):
         if wgs == 0:
             #  ------------ wgs-72 old constants ------------
             self.radiuskm = 6378.135  # km
-            self.mu = 398600.79964  # in km3 / s2
+            self.mu = 3.9860079964e14  # in m3 / s2
             self.radiuskm = 6378.135  # km
             self.xke = 0.0743669161
             self.tumin = 1.0 / self.xke
@@ -26,7 +26,7 @@ class Earth(object):
         elif wgs == 1:
             #  ------------ wgs-72 constants ------------
             self.radiuskm = 6378.135  # km
-            self.mu = 398600.8  # in km3 / s2
+            self.mu = 3.986008e14  # in m3 / s2
             self.radiuskm = 6378.135  # km
             self.xke = 60.0 / np.sqrt(self.radiuskm * self.radiuskm * self.radiuskm / self.mu)
             self.tumin = 1.0 / self.xke
@@ -38,7 +38,7 @@ class Earth(object):
         elif wgs == 2:
             #  ------------ wgs-84 constants ------------
             self.radiuskm = 6378.137  # km
-            self.mu = 398600.5  # in km3 / s2
+            self.mu = 3.986005e14  # in m3 / s2
             self.xke = 60.0 / np.sqrt(self.radiuskm * self.radiuskm * self.radiuskm / self.mu)
             self.tumin = 1.0 / self.xke
             self.j2 = 0.00108262998905
@@ -51,7 +51,7 @@ class Earth(object):
         self.e2 = self.f * (2 - self.f)
         self.tolerance = 1e-10  # rad
 
-    def save_earth_data(self):
+    def save_data(self):
         self.historical_gst.append(self.current_sideral)
 
     def calc_gst(self, current_jd):

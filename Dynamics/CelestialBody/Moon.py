@@ -20,10 +20,10 @@ class Moon(object):
         else:
             print('wgs not used')
 
-    def save_earth_data(self):
+    def save_data(self):
         self.historical_gst.append(self.current_sideral)
 
-    def calc_gst(self, current_jd):
+    def update_state(self, current_jd):
         self.current_sideral = gstime(current_jd)
 
     def get_current_sideral(self):

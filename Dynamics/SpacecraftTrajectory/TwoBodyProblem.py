@@ -8,11 +8,11 @@ class TwoBodyProblem(object):
         self.position_i = init_position
         self.velocity_i = init_velocity
         self.acc_i      = np.zeros(3)
-        self.mu = mu
+        self.mu         = mu
         self.step_width = timestep
         self.current_time = 0
 
-    def update(self, time_array):
+    def update_state(self, time_array):
         self.rungeonestep()
         return self.position_i, self.velocity_i
 
@@ -25,7 +25,7 @@ class TwoBodyProblem(object):
         vy = state[4]
         vz = state[5]
 
-        r3 = np.linalg.norm(np.array(state[0: 3]))**3
+        r3 = np.linalg.norm(state[0:3]) ** 3
 
         rhs = np.zeros(6)
         rhs[0] = vx
@@ -36,7 +36,7 @@ class TwoBodyProblem(object):
         rhs[5] = -self.mu * z / r3 + self.acc_i[2]
         return rhs
 
-    def add_acc_i(self, acc_i):
+    def set_acc_i(self, acc_i):
         self.acc_i += acc_i
 
     def rungeonestep(self):

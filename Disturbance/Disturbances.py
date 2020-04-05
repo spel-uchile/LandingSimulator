@@ -23,10 +23,10 @@ class Disturbances(object):
                 dist.update(self.dist_environment, self.dist_spacecraft)
                 self.dist_torque_b += dist.get_torque_b()
 
-    def get_dist_torque(self):
+    def get_dist_torque_b(self):
         return self.dist_torque_b
 
-    def get_dis_force(self):
+    def get_dis_force_b(self):
         return self.dist_force_b
 
     def reset_output(self):

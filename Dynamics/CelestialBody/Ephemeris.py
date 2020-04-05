@@ -17,19 +17,19 @@ class Ephemeris(object):
         self.num_of_selected_body = ephemerides_properties['num_of_selected_body']
 
         if self.center_object == 'EARTH':
-            self.selected_planet = Earth()
+            self.selected_center_object = Earth()
         elif self.center_object == 'MOON':
-            self.selected_planet = Moon()
+            self.selected_center_object = Moon()
         elif self.center_object == 'MARS':
             self.center_object = Mars()
         else:
             print('Central object not selected')
 
     def update(self, current_jd):
-        self.selected_planet.calc_gst(current_jd)
+        self.selected_center_object.update_state(current_jd)
 
     def save_ephemeris_data(self):
-        self.selected_planet.save_earth_data()
+        self.selected_center_object.save_data()
 
 
 

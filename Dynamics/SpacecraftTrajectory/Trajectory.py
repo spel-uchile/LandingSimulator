@@ -32,6 +32,7 @@ class Trajectory(object):
         self.historical_alts        = []
         self.selected_propagator    = None
         self.selected_planet        = selected_planet
+        self.force_i                = np.zeros(3)
 
     def set_propagator(self):
         if self.propagation_model == 0:
@@ -47,8 +48,15 @@ class Trajectory(object):
         elif self.propagation_model == 1:
             self.selected_propagator = 0
 
-    def update_trajectory(self, array_time):
-        self.current_position, self.current_velocity = self.selected_propagator.update(array_time)
+    def update(self, array_time):
+        self.current_position, self.current_velocity = self.selected_propagator.update_state(array_time)
+
+    def add_force_b(self, force_i):
+        self.force_i += force_i
+        self.selected_propagator.set_acc_i(self.force_i)
+
+    def get_ext_force_b(self):
+        return self.force_i
 
     def TransECItoGeo(self, current_sideral):
         r = np.sqrt(self.current_position[0] ** 2 + self.current_position[1] ** 2)

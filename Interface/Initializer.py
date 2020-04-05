@@ -5,7 +5,6 @@ Created on Thu Jan 16 03:58:00 2020
 @author: EO
 """
 import configparser
-from Library.Pyorbital.pyorbital import tlefile
 import numpy as np
 from datetime import datetime
 
