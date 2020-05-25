@@ -89,11 +89,6 @@ class GeoDef(object):
             # self
             # self.vtk_widget.add_axes
 
-
-
-
-
-
     def add_bar(self):
         self.vtk_widget.subplot(0, 0)
         self.vtk_widget.add_slider_widget(self.sim_speed, [0.5, 100], value = 1, title='Simulation speed')

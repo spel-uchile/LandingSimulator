@@ -1,16 +1,21 @@
-# Elias Obreque
+"""
+Created: 4/13/2020
+Autor: Elias Obreque Sepulveda
+email: els.obrq@gmail.com
+
+"""
 
 import numpy as np
 
 
-class TwoBodyProblem(object):
-    def __init__(self, mu, timestep, init_position, init_velocity):
+class PlanarInertialFrame(object):
+    def __init__(self, mu, step_width, init_position, init_velocity):
         self.position_i = init_position
         self.velocity_i = init_velocity
-        self.acc_i      = np.zeros(3)
-        self.mu         = mu
-        self.g = 9.8
-        self.step_width = timestep
+        self.acc_i = np.zeros(3)
+        self.mu = mu
+        self.g = -1.62
+        self.step_width = step_width
         self.current_time = 0
 
     def update_state(self, time_array):
@@ -27,15 +32,13 @@ class TwoBodyProblem(object):
         vy = state[4]
         vz = state[5]
 
-        r3 = np.linalg.norm(state[0:3]) ** 3
-
         rhs = np.zeros(6)
         rhs[0] = vx
         rhs[1] = vy
         rhs[2] = vz
-        rhs[3] = -self.mu * x / r3 + self.acc_i[0]
-        rhs[4] = -self.mu * y / r3 + self.acc_i[1]
-        rhs[5] = -self.mu * z / r3 + self.acc_i[2]
+        rhs[3] = self.acc_i[0]
+        rhs[4] = self.acc_i[1]
+        rhs[5] = self.g + self.acc_i[2]
         return rhs
 
     def add_acc_i(self, acc_i):

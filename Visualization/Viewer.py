@@ -13,12 +13,12 @@ from threading import Thread
 import time
 import numpy as np
 import pyvista as pv
-from ElementsDefinition import GeoDef
+from .ElementsDefinition import GeoDef
 import pandas as pd
-from Graphics import MainGraph
-from datalogcsv import DataHandler
+from .Graphics import MainGraph
+from .datalogcsv import DataHandler
 from pyquaternion import Quaternion
-from forms.main_screen_ui import Ui_MainWindow
+from .forms.main_screen_ui import Ui_MainWindow
 from pyvista.utilities import translate
 
 
@@ -43,7 +43,6 @@ class Viewer(GeoDef, QtWidgets.QMainWindow):
         # self.window.actionGeneratePlot.triggered.connect(self.plot_slot)
         # self.window.control_spinbox.valueChanged.connect(self.window.control_slider.setValue)
         # self.window.control_slider.valueChanged.connect(self.window.control_spinbox.setValue)
-
 
         #########################################
 
@@ -246,7 +245,6 @@ class Viewer(GeoDef, QtWidgets.QMainWindow):
             # self.body_control_torque.transform(Quaternion(axis=vec, angle=ang).transformation_matrix)
             # self.ct0 = tar_v
             # translate(self.control_torque, [0,0,0], self.datalog.control_torque[n, :])
-
 
 
 if __name__ == '__main__':

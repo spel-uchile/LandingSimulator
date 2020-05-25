@@ -1,5 +1,6 @@
 
 from Components.AOCS.Gyro import Gyro
+from Components.Propulsion.Thruster import Thruster
 from Components.Abstract.ComponentBase import ComponentBase
 
 
@@ -35,7 +36,10 @@ class Components(ComponentBase):
                 del self.power
                 self.get_list.append(None)
             if self.data.thruster_properties is not None:
-                g = 0
+                self.thruster = []
+                for i in range(len(self.data.thruster_properties)):
+                    self.thruster.append(Thruster(port_, self.data.thruster_properties[i]))
+                    self.get_list.append(self.thruster[i])
             else:
                 del self.thruster
                 self.get_list.append(None)

@@ -65,8 +65,8 @@ class SimTime(object):
                                         self.current_array[3],
                                         self.current_array[4],
                                         self.current_array[5])
-        self.current_decyaer = JdToDecyear(self.current_jd)
-        self.trajectorycountTime     += self.stepsimTime
+        self.current_decyaer      = JdToDecyear(self.current_jd)
+        self.trajectorycountTime += self.stepsimTime
 
         if self.trajectorycountTime >= self.trajectorystep:
             self.trajectory_update_flag = True
@@ -77,8 +77,8 @@ class SimTime(object):
         self.update_log_count()
 
     def progressionsimTime(self):
-        val = round(100*self.maincountTime/self.endsimTime, 2)
-        if val % 5 == 0:
+        val = round(100*self.maincountTime/self.endsimTime, 3)
+        if val % 5.00 == 0:
             print(val, '%')
 
     def reset_countTime(self):

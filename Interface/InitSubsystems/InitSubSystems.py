@@ -1,6 +1,7 @@
 
 from ..InitComponents.InitComponents import InitComponents
 from .InitADCS import InitADCS
+from .InitODCS import InitODCS
 import configparser
 
 
@@ -15,7 +16,7 @@ class InitSubSystems(object):
 
         #self.system_init_setting['CDH']     = InitCDH(properties['cdh_setting'])
         self.system_init_setting['ADCS']    = InitADCS(properties['adcs_setting']).get_setting()
-        #self.system_init_setting['ODCS']    = InitODCS(properties['odcs_setting'])
+        self.system_init_setting['ODCS']    = InitODCS(properties['odcs_setting']).get_setting()
         #self.system_init_setting['POWER']   = InitPower(properties['power_setting'])
         #self.system_init_setting['COM']     = InitCOM(properties['com_setting'])
         #self.system_init_setting['STR']     = InitSTR(properties['str_setting'])

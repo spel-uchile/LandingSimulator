@@ -7,6 +7,7 @@ Created on Thu Jan 16 03:58:00 2020
 import configparser
 import numpy as np
 from datetime import datetime
+import pyvista as pv
 
 
 class InitialConfig(object):
@@ -25,7 +26,6 @@ class InitialConfig(object):
     def LogSim(self):
         properties = {'env_mag_log': self.environment_properties['MAG']['mag_logging'],
                       'env_atm_log': self.environment_properties['ATM']['atm_logging'],
-                      'env_srp_log': self.environment_properties['SRP']['srp_logging'],
                       'dis_atm_log': self.disturbance_properties['ADRAG']['atm_logging'],
                       'dis_gra_log': self.disturbance_properties['GRA']['gra_logging']}
         return properties
@@ -71,7 +71,10 @@ def SatSim():
     config = configparser.ConfigParser()
     config.read("Data/ini/Spacecraft.ini", encoding="utf8")
     spacecraft_name = config['NAME']['spacecraft_name']
-    spacecraft_model = config['NAME']['model_name']
+    spacecraft_model_name = config['NAME']['model_name']
+    # Load geometry mesh. Folder Model
+    spacecraft_model = pv.read('./Visualization/Model/' + spacecraft_model_name)
+
     # Rotational speed [rad/s]
     Omega_b = np.zeros(3)
     Omega_b[0] = config['ATTITUDE']['Omega_b(0)']
@@ -174,9 +177,6 @@ def EnvSim():
     mag_rwlimit = float(config['MAG_ENVIRONMENT']['mag_rwlimit'])
     mag_wnvar = float(config['MAG_ENVIRONMENT']['mag_wnvar'])
 
-    srp_calculation = config['SRP']['calculation']
-    srp_logging = config['SRP']['logging']
-
     atm_calculation = config['ATMOSPHERE']['calculation']
     atm_logging = config['ATMOSPHERE']['logging']
     mag_properties = {'mag_calculation': mag_calculation == 'True',
@@ -184,12 +184,9 @@ def EnvSim():
                       'mag_rwdev': mag_rwdev,
                       'mag_rwlimit': mag_rwlimit,
                       'mag_wnvar': mag_wnvar}
-    srp_properties = {'srp_calculation': srp_calculation == 'True',
-                      'srp_logging': srp_logging == 'True'}
     atm_properties = {'atm_calculation': atm_calculation == 'True',
                       'atm_logging': atm_logging == 'True'}
     environment_properties = {'MAG': mag_properties,
-                              'SRP': srp_properties,
                               'ATM': atm_properties}
     return environment_properties
 
@@ -197,8 +194,8 @@ def EnvSim():
 def DistSim():
     config = configparser.ConfigParser()
     config.read("Data/ini/Disturbance.ini", encoding="utf8")
-    grav_properties = {'gra_calculation': config['GRAVITY_GRADIENT']['calculation'],
-                       'gra_logging': config['GRAVITY_GRADIENT']['logging']}
+    grav_properties = {'gra_calculation': config['GRAVITY_GRADIENT']['calculation'] == 'True',
+                       'gra_logging': config['GRAVITY_GRADIENT']['logging'] == 'True'}
 
     specularity = np.zeros(6)
     specularity[0] = config['AIRDRAG']['specularity(0)']
@@ -207,9 +204,9 @@ def DistSim():
     specularity[3] = config['AIRDRAG']['specularity(3)']
     specularity[4] = config['AIRDRAG']['specularity(4)']
     specularity[5] = config['AIRDRAG']['specularity(5)']
-    atmdrag_properties = {'atm_calculation': config['AIRDRAG']['calculation'],
-                          'atm_logging': config['AIRDRAG']['logging'],
-                          'Temp_wall': config['AIRDRAG']['Temp_wall'],
+    atmdrag_properties = {'atm_calculation': config['AIRDRAG']['calculation'] == 'True',
+                          'atm_logging': config['AIRDRAG']['logging'] == 'True',
+                          'Temp_wall': float(config['AIRDRAG']['Temp_wall']),
                           'specularity': specularity}
 
     position_vector_surface = np.zeros((6, 3))
@@ -259,9 +256,10 @@ def DistSim():
                      config['SURFACEFORCE']['mz_normal(1)'],
                      config['SURFACEFORCE']['mz_normal(2)']]
 
-    sff_center = np.array([config['SURFACEFORCE']['center(0)'],
-                           config['SURFACEFORCE']['center(1)'],
-                           config['SURFACEFORCE']['center(2)']])
+    sff_center = np.zeros(3)
+    sff_center[0] = config['SURFACEFORCE']['center(0)']
+    sff_center[1] = config['SURFACEFORCE']['center(1)']
+    sff_center[2] = config['SURFACEFORCE']['center(2)']
 
     sff_properties = {'sff_position': position_vector_surface,
                       'sff_area': sff_area,

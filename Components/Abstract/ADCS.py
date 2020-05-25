@@ -39,7 +39,6 @@ class ADCS(ComponentBase):
         self.check_mode()
 
         self.calculate_control_torque()
-
         return
 
     def read_sensors(self):
@@ -94,3 +93,9 @@ class ADCS(ComponentBase):
 
     def get_torque(self):
         return self.rw_torque_b
+
+    def log_value(self):
+        return
+
+    def get_log_values(self):
+        return

@@ -1,5 +1,6 @@
 
 from .InitGyro import InitGyro
+from .InitThruster import InitThruster
 
 
 class InitComponents(object):
@@ -34,4 +35,4 @@ class InitComponents(object):
         if properties['power_flag']:
             k = 0
         if properties['thruster_flag']:
-            k = 0
+            self.thruster_properties = InitThruster(path, prop_step).thruster_properties

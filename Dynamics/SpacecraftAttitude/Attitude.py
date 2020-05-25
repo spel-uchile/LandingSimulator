@@ -23,6 +23,7 @@ class Attitude(object):
 
         self.Inertia                = attitude_spacecraft['Inertia']
         self.inv_Inertia            = np.linalg.inv(self.Inertia)
+        self.current_mass           = attitude_spacecraft['Mass']
 
         self.current_h_rw_b     = np.zeros(3)
         self.int_torque_b       = np.zeros(3)
@@ -37,9 +38,10 @@ class Attitude(object):
         self.S_omega            = np.zeros((3, 3))
         self.Omega              = np.zeros((4, 4))
         self.historical_quaternion_i2b = []
-        self.historical_omega_b = []
-        self.historical_torque_t_b   = []
-        self.historical_h_total_i = []
+        self.historical_omega_b     = []
+        self.historical_torque_t_b  = []
+        self.historical_h_total_i   = []
+        self.historical_mass        = []
 
     def update_attitude(self, current_simtime):
         if self.attitude_update_flag:
@@ -59,6 +61,7 @@ class Attitude(object):
         self.historical_omega_b.append(self.current_omega_b)
         self.historical_torque_t_b.append(self.total_torque_b())
         self.historical_h_total_i.append(self.h_total_i_norm)
+        self.historical_mass.append(self.current_mass)
 
     def add_ext_torque_b(self, ext_torque_b):
         self.ext_torque_b += ext_torque_b
@@ -77,6 +80,12 @@ class Attitude(object):
 
     def get_current_q_i2b(self):
         return self.current_quaternion_i2b()
+
+    def get_class_q_i2b(self):
+        return self.current_quaternion_i2b
+
+    def get_class_q_b2i(self):
+        return Quaternions(self.current_quaternion_i2b.conjugate())
 
     def total_torque_b(self):
         return self.ext_torque_b + self.int_torque_b
@@ -170,5 +179,6 @@ class Attitude(object):
                            'torque_t_b(X)[Nm]': np.array(self.historical_torque_t_b)[:, 0],
                            'torque_t_b(Y)[Nm]': np.array(self.historical_torque_t_b)[:, 1],
                            'torque_t_b(Z)[Nm]': np.array(self.historical_torque_t_b)[:, 2],
-                           'h_total[Nms]': np.array(self.historical_h_total_i)}
+                           'h_total[Nms]': np.array(self.historical_h_total_i),
+                           'Mass [kg]': np.array(self.historical_mass)}
         return report_attitude
